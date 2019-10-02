@@ -20,12 +20,12 @@ namespace WhoamiCore
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await WriteStuff(context);
+                    await WriteInfo(context);
                 });
             });
         }
 
-        private static async Task WriteStuff(HttpContext context)
+        private static async Task WriteInfo(HttpContext context)
         {
             await context.Response.WriteAsync($"Hostname: {System.Net.Dns.GetHostName()}{Environment.NewLine}");
             await context.Response.WriteAsync($"Method: {context.Request.Method}{Environment.NewLine}");
