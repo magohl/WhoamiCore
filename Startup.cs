@@ -18,7 +18,8 @@ namespace WhoamiCore
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
+                //Accept any URL
+                endpoints.MapGet("{*url}", async context =>
                 {
                     await WriteInfo(context);
                 });
@@ -27,6 +28,7 @@ namespace WhoamiCore
 
         private static async Task WriteInfo(HttpContext context)
         {
+            //Write connection, request and system information
             await context.Response.WriteAsync($"Hostname: {System.Net.Dns.GetHostName()}{Environment.NewLine}");
             await context.Response.WriteAsync($"Method: {context.Request.Method}{Environment.NewLine}");
             await context.Response.WriteAsync($"Path: {context.Request.Path}{Environment.NewLine}");
@@ -38,6 +40,7 @@ namespace WhoamiCore
             await context.Response.WriteAsync($"Framework: {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}{Environment.NewLine}");
             await context.Response.WriteAsync($"System Version: {System.Runtime.InteropServices.RuntimeEnvironment.GetSystemVersion()}{Environment.NewLine}");
 
+            //Write HTTP headers
             foreach (var header in context.Request.Headers)
             {
                 await context.Response.WriteAsync($"Request-Header {header.Key}: {header.Value}{Environment.NewLine}");
