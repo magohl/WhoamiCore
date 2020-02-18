@@ -36,4 +36,4 @@ jobs:
           .manifests/deployment.yaml
           .manifests/service.yaml
         images: |
-          magohl/whoamicore:${GITHUB_REF#refs/tags/}
+          index.docker.io/magohl/whoamicore:${GITHUB_REF#refs/tags/}
