@@ -1,0 +1,23 @@
+name: Build and push
+
+on:
+  push:
+    tags:
+    - '*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - uses: azure/docker-login@v1
+      with:
+        ##login-server: dockerhub.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - run: |
+        docker build . -t magohl/whoamicore:${GITHUB_REF#refs/tags/}
+        docker push magohl/whoamicore:${GITHUB_REF#refs/tags/}
