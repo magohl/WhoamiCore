@@ -12,6 +12,15 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+
+    - name: Set env
+      run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF#refs/tags/}
+
+    - name: Test
+      run: |
+        echo $RELEASE_VERSION
+        echo ${{ env.RELEASE_VERSION }}
+
     - uses: azure/docker-login@v1
       with:
         ##login-server: dockerhub.io
@@ -36,4 +45,4 @@ jobs:
           .manifests/deployment.yaml
           .manifests/service.yaml
         images: |
-          index.docker.io/magohl/whoamicore:${GITHUB_REF#refs/tags/}
+          index.docker.io/magohl/whoamicore:${{ env.RELEASE_VERSION }}
