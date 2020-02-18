@@ -21,3 +21,19 @@ jobs:
     - run: |
         docker build . -t magohl/whoamicore:${GITHUB_REF#refs/tags/}
         docker push magohl/whoamicore:${GITHUB_REF#refs/tags/}
+
+
+    - uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}' # Azure credentials
+        resourceGroupName: '<resource group name>'
+        clusterName: '<cluster name>'
+      id: login
+
+    - uses: Azure/k8s-deploy@v1
+      with:
+        manifests: |
+          .manifests/deployment.yml
+          .manifests/service.yml
+        images: |
+          magohl/whoamicore:${GITHUB_REF#refs/tags/}
