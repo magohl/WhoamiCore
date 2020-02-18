@@ -26,8 +26,8 @@ jobs:
     - uses: azure/aks-set-context@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}' # Azure credentials
-        resourceGroupName: 'magnus-aks'
-        clusterName: 'kramerica-k8s'
+        resource-group: 'magnus-aks'
+        cluster-name: 'kramerica-k8s'
       id: login
 
     - uses: Azure/k8s-deploy@v1
