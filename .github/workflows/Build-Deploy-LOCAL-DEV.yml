@@ -1,4 +1,4 @@
-name: Build and push
+name: Build and deploy locally
 
 on:
   push:
@@ -31,22 +31,19 @@ jobs:
         docker build . -t magohl/whoamicore:${GITHUB_REF#refs/tags/}
         docker push magohl/whoamicore:${GITHUB_REF#refs/tags/}
 
-
-#    - uses: azure/aks-set-context@v1
-#      with:
-#        creds: '${{ secrets.AZURE_CREDENTIALS }}' # Azure credentials
-#        resource-group: 'magnus-aks'
-#        cluster-name: 'kramerica-k8s'
-#      id: login
-
-
-    - uses: azure/k8s-set-context@1
+    - uses: azure/k8s-set-context@master
       with:
         method: kubeconfig
         kubeconfig: '{{ secrets.LOCAL_K8S_CONFIG }}'
         context: 'docker-desktop'
       id: setcontext
 
+#    - uses: steebchen/kubectl@master
+#      env:
+#        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+#      with:
+#        args: set image --record deployment/my-app container=${{ github.repository }}:${{ github.sha }}
+        
     - uses: Azure/k8s-deploy@v1
       with:
         manifests: |
