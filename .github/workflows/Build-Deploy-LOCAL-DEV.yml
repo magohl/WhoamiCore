@@ -39,6 +39,14 @@ jobs:
 #        cluster-name: 'kramerica-k8s'
 #      id: login
 
+
+    - uses: Azure/k8s-set-context@1
+      with:
+        method: kubeconfig
+        kubeconfig: '{{ secrets.LOCAL_K8S_CONFIG }}'
+        context: 'docker-desktop'
+      id: setcontext
+
     - uses: Azure/k8s-deploy@v1
       with:
         manifests: |
