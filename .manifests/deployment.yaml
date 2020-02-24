@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: whoamicore
-        image: magohl/whoamicore
+        image: index.docker.io/magohl/whoamicore
         resources:
           limits:
             memory: "128Mi"
