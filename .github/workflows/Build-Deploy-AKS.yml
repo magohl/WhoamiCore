@@ -3,8 +3,7 @@ name: Build and push
 on:
   push:
     tags:
-    - 'XYZ'
-    # - '*'
+     - '*'
 
 jobs:
   build:
