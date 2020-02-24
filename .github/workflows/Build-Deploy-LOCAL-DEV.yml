@@ -1,0 +1,54 @@
+name: Build and deploy locally
+
+on:
+  push:
+    tags:
+    - '*'
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+    
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Set env
+      run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF#refs/tags/}
+
+    - name: Test
+      run: |
+        echo $RELEASE_VERSION
+        echo ${{ env.RELEASE_VERSION }}
+
+    - uses: azure/docker-login@v1
+      with:
+        ##login-server: dockerhub.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - run: |
+        docker build . -t magohl/whoamicore:${GITHUB_REF#refs/tags/}
+        docker push magohl/whoamicore:${GITHUB_REF#refs/tags/}
+
+#    - uses: azure/k8s-set-context@v1
+#      with:
+#        method: kubeconfig
+#        kubeconfig: '{{ secrets.LOCAL_K8S_CONFIG }}'
+#        context: 'docker-desktop'
+#      id: setcontext
+
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: service-account
+        k8s-url: ${{ secrets.LOCAL_K8S_SERVICE_URL}}
+        k8s-secret: ${{ secrets.LOCAL_K8S_SERVICE_ACCOUNT }}
+      id: setcontext
+        
+    - uses: Azure/k8s-deploy@v1
+      with:
+        manifests: |
+          .manifests/deployment.yaml
+          .manifests/service.yaml
+        images: |
+          index.docker.io/magohl/whoamicore:${{ env.RELEASE_VERSION }}
