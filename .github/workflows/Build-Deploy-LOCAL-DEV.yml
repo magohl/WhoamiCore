@@ -31,7 +31,7 @@ jobs:
         docker build . -t magohl/whoamicore:${GITHUB_REF#refs/tags/}
         docker push magohl/whoamicore:${GITHUB_REF#refs/tags/}
 
-    - uses: azure/k8s-set-context@master
+    - uses: azure/k8s-set-context@v1
       with:
         method: kubeconfig
         kubeconfig: '{{ secrets.LOCAL_K8S_CONFIG }}'
