@@ -3,7 +3,8 @@ name: Build and deploy locally
 on:
   push:
     tags:
-    - '*'
+    #Temp removed local
+    - 'XXX*'
 
 jobs:
   build:
