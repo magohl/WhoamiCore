@@ -30,6 +30,7 @@ namespace WhoamiCore
         {
             //Write connection, request and system information
             await context.Response.WriteAsync($"Hostname: {System.Net.Dns.GetHostName()}{Environment.NewLine}");
+            await context.Response.WriteAsync($"Host header: {context.Request.Host}{Environment.NewLine}");
             await context.Response.WriteAsync($"Method: {context.Request.Method}{Environment.NewLine}");
             await context.Response.WriteAsync($"Path: {context.Request.Path}{Environment.NewLine}");
             await context.Response.WriteAsync($"Scheme: {context.Request.Scheme}{Environment.NewLine}");
@@ -44,7 +45,7 @@ namespace WhoamiCore
             //Write HTTP headers
             foreach (var header in context.Request.Headers)
             {
-                await context.Response.WriteAsync($"Request-Header {header.Key}: {header.Value}{Environment.NewLine}");
+                await context.Response.WriteAsync($"Request Http Header - {header.Key}: {header.Value}{Environment.NewLine}");
             }
         }
     }
