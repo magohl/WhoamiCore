@@ -41,6 +41,7 @@ jobs:
 
     - uses: Azure/k8s-deploy@v1
       with:
+        namespace: default
         manifests: |
           .manifests/deployment.yaml
           .manifests/service.yaml
