@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: whoami
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: whoami
@@ -17,7 +17,7 @@ spec:
         image: index.docker.io/magohl/whoamicore
         resources:
           limits:
-            memory: "128Mi"
-            cpu: "500m"
+            #memory: "128Mi"
+            #cpu: "500m"
         ports:
         - containerPort: 80

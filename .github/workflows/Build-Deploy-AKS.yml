@@ -43,8 +43,8 @@ jobs:
       with:
         namespace: default
         manifests: |
+          .manifests/ingress.yaml
           .manifests/deployment.yaml
           .manifests/service.yaml
-          .manifests/ingress.yaml
         images: |
           index.docker.io/magohl/whoamicore:${{ env.RELEASE_VERSION }}
