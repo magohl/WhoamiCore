@@ -1,5 +1,5 @@
 # WhoamiCore
-A minimal Asp.Net Core application inspired by the Containous whoami application
+A minimal Asp.Net 5.0 (core) application inspired by the Containous whoami test-application.
 
 This is my go-to testrig that i use to test .Net Core together with Docker, kubernetes, docker swarm, reverse proxies etc.
 
