@@ -2,8 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: whoami
+  namespace: whoami
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: whoami
@@ -14,10 +15,10 @@ spec:
     spec:
       containers:
       - name: whoamicore
-        image: index.docker.io/magohl/whoamicore
+        image: magohl/whoamicore:latest
         resources:
           limits:
-            #memory: "128Mi"
-            #cpu: "500m"
+            memory: "128Mi"
+            cpu: "100m"
         ports:
         - containerPort: 80

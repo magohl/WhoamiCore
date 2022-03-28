@@ -1,0 +1,1 @@
+my sample-hosting in kubernetes with Traefik as ingressroute

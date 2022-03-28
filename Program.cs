@@ -17,6 +17,7 @@ static async Task WriteRequestInfo(HttpContext context)
     await context.Response.WriteAsync($"Method: {context.Request.Method}{Environment.NewLine}");
     await context.Response.WriteAsync($"Path: {context.Request.Path}{Environment.NewLine}");
     await context.Response.WriteAsync($"Scheme: {context.Request.Scheme}{Environment.NewLine}");
+    await context.Response.WriteAsync($"Protocol: {context.Request.Protocol}{Environment.NewLine}");
     await context.Response.WriteAsync($"Host header: {context.Request.Host}{Environment.NewLine}");
     await context.Response.WriteAsync(Environment.NewLine);
 
@@ -31,6 +32,10 @@ static async Task WriteRequestInfo(HttpContext context)
     await context.Response.WriteAsync($"Process Architecture: {System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString()}{Environment.NewLine}");
     await context.Response.WriteAsync($"Processor count: {System.Environment.ProcessorCount}{Environment.NewLine}");
     await context.Response.WriteAsync($"System Version: {System.Runtime.InteropServices.RuntimeEnvironment.GetSystemVersion()}{Environment.NewLine}");
+    await context.Response.WriteAsync(Environment.NewLine);
+
+    await context.Response.WriteAsync($"System UTC: {DateTime.UtcNow}{Environment.NewLine}");
+    await context.Response.WriteAsync($"Process Start: {System.Diagnostics.Process.GetCurrentProcess().StartTime}{Environment.NewLine}");
     await context.Response.WriteAsync(Environment.NewLine);
 
     //Write HTTP headers
