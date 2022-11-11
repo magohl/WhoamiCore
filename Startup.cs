@@ -59,8 +59,8 @@ namespace WhoamiCore
             await context.Response.WriteAsync($"Path: {context.Request.Path}{Environment.NewLine}");
             await context.Response.WriteAsync($"Scheme: {context.Request.Scheme}{Environment.NewLine}");
             await context.Response.WriteAsync($"Host header: {context.Request.Host}{Environment.NewLine}");
-            await context.Response.WriteAsync($"Remote-Ip:port: {context.Connection.RemoteIpAddress.MapToIPv4().ToString()}:{context.Connection.RemotePort.ToString()}{Environment.NewLine}");
-            await context.Response.WriteAsync($"Local-Ip:port: {context.Connection.LocalIpAddress.MapToIPv4().ToString()}:{context.Connection.LocalPort.ToString()}{Environment.NewLine}");
+            await context.Response.WriteAsync($"Remote-Ip:port: {context.Connection.RemoteIpAddress?.MapToIPv4().ToString()}:{context.Connection.RemotePort.ToString()}{Environment.NewLine}");
+            await context.Response.WriteAsync($"Local-Ip:port: {context.Connection.LocalIpAddress?.MapToIPv4().ToString()}:{context.Connection.LocalPort.ToString()}{Environment.NewLine}");
             await context.Response.WriteAsync($"OS Architecture: {System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString()}{Environment.NewLine}");
             await context.Response.WriteAsync($"OS Description: {System.Runtime.InteropServices.RuntimeInformation.OSDescription}{Environment.NewLine}");
             await context.Response.WriteAsync($"Runtime identifier: {System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier}{Environment.NewLine}");
