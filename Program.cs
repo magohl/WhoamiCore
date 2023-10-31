@@ -23,7 +23,7 @@ app.UseForwardedHeaders();
 /* main endpoint */
 app.MapGet("{*url}", async context =>
 {
-    context.Response.Headers.Add("Cache-Control", "no-cache");
+    context.Response.Headers.Append("Cache-Control", "no-cache");
     await WriteRequestInfo(context);
 });
 
