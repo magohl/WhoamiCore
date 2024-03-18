@@ -10,4 +10,4 @@ Usage
 docker run -p 8080:8080 magohl/whoamicore
 browse to http://localhost:888
 
-![image](https://github.com/magohl/WhoamiCore/assets/1846780/7fe1ab06-a458-4d55-b036-95c540e43f9c)
+![image](https://github.com/magohl/WhoamiCore/assets/1846780/0ebd708c-6b61-4898-8f65-b741713e2bf2)
