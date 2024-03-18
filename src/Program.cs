@@ -65,7 +65,7 @@ static async Task RequestStopWatch(HttpContext context, Func<Task> next)
     sw.Start();
     await next.Invoke();
     sw.Stop();
-    await context.Response.WriteAsync($"Request pipeline roundtrip: {sw.ElapsedMilliseconds}ms{Environment.NewLine}");
+    await context.Response.WriteAsync($"Request pipeline roundtrip: {sw.ElapsedTicks} ticks ({sw.ElapsedMilliseconds}ms){Environment.NewLine}");
 }
 
 static string Logo() => $"""" 
