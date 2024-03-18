@@ -1,7 +1,9 @@
 # WhoamiCore
 A minimal Asp.Net 8 application inspired by the Containous whoami test-application.
 
-This is my go-to testrig that i use to test .Net Core together with Docker, kubernetes, docker swarm, reverse proxies etc.
+This is my go-to testrig that i use to test Docker, Kubernetes, Docker swarm, Azure AKS, Container Apps, App Service with containers, reverse proxies etc.
+
+It return information on the the request, platform and runtime environment.
 
 Docker (linux) image
 https://hub.docker.com/r/magohl/whoamicore
