@@ -33,6 +33,6 @@ jobs:
 
     - name: Build and push
       run: |
-        docker build . -t ghcr.io/${{ github.repository_owner }}/whoamicore:${{ env.RELEASE_VERSION }} -t ghcr.io/${{ github.repository_owner }}/whoamicore:latest
+        docker build src -t ghcr.io/${{ github.repository_owner }}/whoamicore:${{ env.RELEASE_VERSION }} -t ghcr.io/${{ github.repository_owner }}/whoamicore:latest
         docker push ghcr.io/${{ github.repository_owner }}/whoamicore:${{ env.RELEASE_VERSION }}
         docker push ghcr.io/${{ github.repository_owner }}/whoamicore:latest
