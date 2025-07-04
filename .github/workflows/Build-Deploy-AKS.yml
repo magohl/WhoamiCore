@@ -1,4 +1,4 @@
-name: Build and push AKS
+name: Build and push
 
 on:
   push:
@@ -7,26 +7,32 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: read
+      packages: write
+    
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
 
     - name: Set env
-      run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF#refs/tags/}
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
     - name: Test
       run: |
         echo $RELEASE_VERSION
         echo ${{ env.RELEASE_VERSION }}
 
-    - uses: azure/docker-login@v1
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v3
       with:
-        ##login-server: dockerhub.io
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
-    - run: |
-        docker build . -t magohl/whoamicore:${GITHUB_REF#refs/tags/}
-        docker push magohl/whoamicore:${GITHUB_REF#refs/tags/}
+    - name: Build and push
+      run: |
+        docker build . -t ghcr.io/${{ github.repository_owner }}/whoamicore:${{ env.RELEASE_VERSION }} -t ghcr.io/${{ github.repository_owner }}/whoamicore:latest
+        docker push ghcr.io/${{ github.repository_owner }}/whoamicore:${{ env.RELEASE_VERSION }}
+        docker push ghcr.io/${{ github.repository_owner }}/whoamicore:latest
