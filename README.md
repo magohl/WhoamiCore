@@ -9,7 +9,7 @@ Docker (linux) image
 https://hub.docker.com/r/magohl/whoamicore
 
 Usage
-- ``docker run -p 8080:8080 ghcr.io/magohl/whoamicore:latest``
+- ``docker run -p 8080:8080 magohl/whoamicore:latest``
 - Browse or curl to http://localhost:8080
 
 ![image](https://github.com/magohl/WhoamiCore/assets/1846780/0ebd708c-6b61-4898-8f65-b741713e2bf2)

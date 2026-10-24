@@ -6,13 +6,15 @@ on:
     tags: [ '*' ]
   workflow_dispatch:
 
+env:
+  IMAGE: magohl/whoamicore
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     permissions:
       contents: read
-      packages: write
 
     steps:
     - uses: actions/checkout@v4
@@ -26,24 +28,23 @@ jobs:
           echo "RELEASE_VERSION=sha-${GITHUB_SHA::7}" >> "${GITHUB_ENV}"
         fi
 
-    - name: Log in to GitHub Container Registry
+    - name: Log in to Docker Hub
       uses: docker/login-action@v3
       with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - name: Build and push
       run: |
         docker build src \
-          -t "ghcr.io/${{ github.repository_owner }}/whoamicore:${{ env.RELEASE_VERSION }}" \
-          -t "ghcr.io/${{ github.repository_owner }}/whoamicore:latest"
-        docker push "ghcr.io/${{ github.repository_owner }}/whoamicore:${{ env.RELEASE_VERSION }}"
-        docker push "ghcr.io/${{ github.repository_owner }}/whoamicore:latest"
+          -t "${{ env.IMAGE }}:${{ env.RELEASE_VERSION }}" \
+          -t "${{ env.IMAGE }}:latest"
+        docker push "${{ env.IMAGE }}:${{ env.RELEASE_VERSION }}"
+        docker push "${{ env.IMAGE }}:latest"
 
     - name: Run image smoke test
       run: |
-        docker run -d --name smoke -p 8080:8080 "ghcr.io/${{ github.repository_owner }}/whoamicore:${{ env.RELEASE_VERSION }}"
+        docker run -d --name smoke -p 8080:8080 "${{ env.IMAGE }}:${{ env.RELEASE_VERSION }}"
         sleep 5
         curl -sf http://localhost:8080/ | grep -q "Framework: .NET 10" || (docker logs smoke && exit 1)
         docker rm -f smoke
