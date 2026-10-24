@@ -2,27 +2,29 @@ name: Build and push
 
 on:
   push:
-    tags:
-     - '*'
+    branches: [ master ]
+    tags: [ '*' ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: read
       packages: write
-    
+
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set env
-      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-
-    - name: Test
+    - name: Set image version
       run: |
-        echo $RELEASE_VERSION
-        echo ${{ env.RELEASE_VERSION }}
+        # Tags build versioned images (e.g. v10.0.0); master builds use the commit sha
+        if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> "${GITHUB_ENV}"
+        else
+          echo "RELEASE_VERSION=sha-${GITHUB_SHA::7}" >> "${GITHUB_ENV}"
+        fi
 
     - name: Log in to GitHub Container Registry
       uses: docker/login-action@v3
@@ -33,6 +35,15 @@ jobs:
 
     - name: Build and push
       run: |
-        docker build src -t ghcr.io/${{ github.repository_owner }}/whoamicore:${{ env.RELEASE_VERSION }} -t ghcr.io/${{ github.repository_owner }}/whoamicore:latest
-        docker push ghcr.io/${{ github.repository_owner }}/whoamicore:${{ env.RELEASE_VERSION }}
-        docker push ghcr.io/${{ github.repository_owner }}/whoamicore:latest
+        docker build src \
+          -t "ghcr.io/${{ github.repository_owner }}/whoamicore:${{ env.RELEASE_VERSION }}" \
+          -t "ghcr.io/${{ github.repository_owner }}/whoamicore:latest"
+        docker push "ghcr.io/${{ github.repository_owner }}/whoamicore:${{ env.RELEASE_VERSION }}"
+        docker push "ghcr.io/${{ github.repository_owner }}/whoamicore:latest"
+
+    - name: Run image smoke test
+      run: |
+        docker run -d --name smoke -p 8080:8080 "ghcr.io/${{ github.repository_owner }}/whoamicore:${{ env.RELEASE_VERSION }}"
+        sleep 5
+        curl -sf http://localhost:8080/ | grep -q "Framework: .NET 10" || (docker logs smoke && exit 1)
+        docker rm -f smoke
